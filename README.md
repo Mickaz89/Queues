@@ -244,28 +244,3 @@ curl -X GET "http://localhost:3000/api/orders"  # Returns 204 (empty)
 
 ---
 
-## 💡 Key Concepts
-
-### FIFO (First In, First Out)
-Messages are processed in the order they arrive - like a line at a store.
-
-### Long Polling
-Instead of constantly asking "is there a message?", the GET request waits until a message arrives or timeout expires.
-
-### In-Memory Storage
-All queues are stored in RAM (no database). If the server restarts, all messages are lost. This is fine for simple use cases or temporary queues.
-
----
-
-## 🎓 Interview Tips
-
-This implementation demonstrates:
-- ✅ Clean TypeScript code
-- ✅ RESTful API design
-- ✅ Asynchronous programming (Promises)
-- ✅ FIFO queue implementation
-- ✅ Timeout handling
-- ✅ Edge case consideration
-
-**Keep it simple** - The interviewer wants to see you understand the fundamentals, not over-engineer the solution!
-
