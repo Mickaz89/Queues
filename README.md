@@ -43,21 +43,28 @@ The server runs on **http://localhost:3000**
 
 Adds a message to the queue.
 
-**Request:**
+**Request Body:**
+```json
+{
+  "content": "Your message content here"
+}
+```
+
+**Example:**
 ```bash
 POST http://localhost:3000/api/orders
 Content-Type: application/json
 
 {
-  "orderId": 123,
-  "item": "Pizza"
+  "content": "Order #123 for Pizza"
 }
 ```
 
 **Response:**
 ```json
 {
-  "success": true
+  "success": true,
+  "messageId": "a1b2c3d4-5678-90ab-cdef-1234567890ab"
 }
 ```
 
@@ -78,8 +85,9 @@ GET http://localhost:3000/api/orders?timeout=5000
 **Response (if message available):**
 ```json
 {
-  "orderId": 123,
-  "item": "Pizza"
+  "id": "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+  "content": "Order #123 for Pizza",
+  "timestamp": 1699564800000
 }
 ```
 
@@ -184,7 +192,7 @@ curl -X GET "http://localhost:3000/api/orders?timeout=30000"
 ```bash
 curl -X POST "http://localhost:3000/api/orders" \
   -H "Content-Type: application/json" \
-  -d '{"orderId": 123, "item": "Pizza"}'
+  -d '{"content": "Order #123 for Pizza"}'
 ```
 
 You'll see Terminal 1 immediately receive the message!
