@@ -98,6 +98,28 @@ HTTP 204 No Content
 
 ---
 
+## 📨 Message Structure
+
+Every message in the queue follows this structure (similar to AWS SQS):
+
+```typescript
+{
+  id: string;           // Unique identifier (UUID)
+  content: string;      // Your message content
+  timestamp: number;    // When the message was created (Unix timestamp in ms)
+}
+```
+
+**When you POST:**
+- You only provide `content`
+- The server automatically generates `id` and `timestamp`
+- You receive the `messageId` in the response
+
+**When you GET:**
+- You receive the full message object with all fields
+
+---
+
 ## 🎯 How It Works
 
 ### The Queue Manager
@@ -203,20 +225,20 @@ You'll see Terminal 1 immediately receive the message!
 # Add 3 messages
 curl -X POST "http://localhost:3000/api/orders" \
   -H "Content-Type: application/json" \
-  -d '{"orderId": 1, "item": "Pizza"}'
+  -d '{"content": "Order #1: Pizza"}'
 
 curl -X POST "http://localhost:3000/api/orders" \
   -H "Content-Type: application/json" \
-  -d '{"orderId": 2, "item": "Burger"}'
+  -d '{"content": "Order #2: Burger"}'
 
 curl -X POST "http://localhost:3000/api/orders" \
   -H "Content-Type: application/json" \
-  -d '{"orderId": 3, "item": "Salad"}'
+  -d '{"content": "Order #3: Salad"}'
 
 # Get them (FIFO order)
-curl -X GET "http://localhost:3000/api/orders"  # Returns Pizza
-curl -X GET "http://localhost:3000/api/orders"  # Returns Burger
-curl -X GET "http://localhost:3000/api/orders"  # Returns Salad
+curl -X GET "http://localhost:3000/api/orders"  # Returns message with content "Order #1: Pizza"
+curl -X GET "http://localhost:3000/api/orders"  # Returns message with content "Order #2: Burger"
+curl -X GET "http://localhost:3000/api/orders"  # Returns message with content "Order #3: Salad"
 curl -X GET "http://localhost:3000/api/orders"  # Returns 204 (empty)
 ```
 
